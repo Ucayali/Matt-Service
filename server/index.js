@@ -15,14 +15,13 @@ app.use(express.static(path.join(__dirname, '/../public')));
 
 
 app.get('/items/:id', (req, res) => {
-  db.getAllDocuments(req.params.id, (err, success) => {
+  const itemId = req.params.id;
+  db.getAllDocuments(itemId, (err, success) => {
     if (err) {
       console.log(err);
-      res.sendStatus(404)
-      res.end();
+      res.sendStatus(404).end();
     } else {
-      res.status(200);
-      res.send(success).end();
+      res.send(success[0]).end();
     }
   });
 });

@@ -1,6 +1,6 @@
 .Star-Modal {
   position: absolute;
-  margin-left: -162.5px;
+  /* margin-left: -162.5px; */
   background-color: #fff;
   display: none;
   z-index: 2;
