@@ -6,48 +6,40 @@ const faker = require('faker');
 const start = new Date();
 
 
-const genStars = () => {
-  const starsObj = {};
-  starsObj.one = Math.floor(Math.random() * 100);
-  starsObj.two = Math.floor(Math.random() * 100);
-  starsObj.three = Math.floor(Math.random() * 100);
-  starsObj.four = Math.floor(Math.random() * 100);
-  starsObj.five = Math.floor(Math.random() * 100);
-  starsObj.total = starsObj.one + starsObj.two + starsObj.three + starsObj.four + starsObj.five;
-  return starsObj;
-};
-
-const genDetails = () => {
-  const details = [];
-  const sentences = faker.lorem.sentences();
-  const paragraphs = faker.lorem.paragraphs();
-  details.push(sentences, paragraphs);
-  return details;
-};
-
-const writeProducts = fs.createWriteStream('products.csv');
-writeProducts.write('id, productName, producer, answeredQuestions, numberOfRatings, starPercentages, price, inStock, productInfo\n', 'utf8');
+const writeProducts = fs.createWriteStream('test.csv');
+writeProducts.write('id|productName|producer|answeredQuestions|numberOfRatings|starPercentages|price|inStock|productInfo\n', 'utf8');
 
 
 const dataGen = (writer, encoding, callback) => {
-  let i = 100000;
+  let i = 10000000;
   let productId = 0;
   function write() {
     let ok = true;
     do {
       i -= 1;
       productId += 1;
-      const stars = genStars();
       const id = productId;
       const productName = faker.commerce.productName();
       const producer = faker.company.companyName();
       const answeredQuestions = Math.floor(Math.random() * 100);
-      const numberOfRatings = stars.total;
-      const starPercentages = stars;
+      const ones = Math.floor(Math.random() * 100);
+      const twos = Math.floor(Math.random() * 100);
+      const threes = Math.floor(Math.random() * 100);
+      const fours = Math.floor(Math.random() * 100);
+      const fives = Math.floor(Math.random() * 100);
+      const stars = {
+        one: ones,
+        two: twos,
+        three: threes,
+        four: fours,
+        five: fives,
+      };
+      const numberOfRatings = ones + twos + threes + fours + fives;
+      const starPercentages = JSON.stringify(stars);
       const price = (10000 * Math.random()).toFixed(2);
       const inStock = Math.random() > 0.5;
-      const productInfo = genDetails();
-      const data = `${id}, ${productName}, ${producer}, ${answeredQuestions}, ${numberOfRatings}, ${starPercentages}, ${price}, ${inStock}, ${productInfo}\n`;
+      const productInfo = [`'${faker.lorem.sentence()}'`, `'${faker.lorem.paragraph()}'`, `'${faker.lorem.paragraph()}'`];
+      const data = `${id}|${productName}|${producer}|${answeredQuestions}|${numberOfRatings}|${starPercentages}|${price}|${inStock}|${productInfo}\n`;
       if (i === 0) {
         writer.write(data, encoding, callback);
       } else {
@@ -59,7 +51,6 @@ const dataGen = (writer, encoding, callback) => {
       writer.once('drain', write);
     }
   }
-  console.log(`started at: ${start.toUTCString()}`);
   write();
 };
 
