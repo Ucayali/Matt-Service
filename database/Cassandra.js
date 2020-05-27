@@ -22,4 +22,13 @@ tempClient.connect()
   })
   .then(() => {
     client.connect((err) => (err ? console.log('Connection error!', err) : console.log('Connected to item_details keyspace!')));
+  })
+  .then(() => {
+    client.execute('CREATE TABLE IF NOT EXISTS item_details.items (id INT, productName TEXT, producer TEXT, answeredQuestions INT, numberOfRatings INT, starPercentages TEXT, price DOUBLE, inStock BOOLEAN, productinfo list<text>, PRIMARY KEY (id))')
+      .then(() => {
+        console.log('item_details.items table created!');
+      });
+  })
+  .catch((err) => {
+    console.error('Cassandra connection error!', err);
   });
