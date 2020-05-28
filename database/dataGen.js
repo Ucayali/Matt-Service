@@ -6,8 +6,8 @@ const faker = require('faker');
 const start = new Date();
 
 
-const writeProducts = fs.createWriteStream('test.csv');
-writeProducts.write('id|productName|producer|answeredQuestions|numberOfRatings|starPercentages|price|inStock|productInfo\n', 'utf8');
+const writeProducts = fs.createWriteStream('./database/products.csv');
+writeProducts.write('id|productname|producer|answeredquestions|numberofratings|starpercentages|price|instock|productinfo\n', 'utf8');
 
 
 const dataGen = (writer, encoding, callback) => {
