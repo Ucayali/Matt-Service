@@ -35,7 +35,8 @@ const dataGen = (writer, encoding, callback) => {
         five: fives,
       };
       const numberOfRatings = ones + twos + threes + fours + fives;
-      const starPercentages = JSON.stringify(stars);
+      const starRatings = JSON.stringify(stars);
+      const starPercentages = starRatings.replace(/"/g, "'");
       const price = (10000 * Math.random()).toFixed(2);
       const inStock = Math.random() > 0.5;
       const productInfo = [`'${faker.lorem.sentence()}'`, `'${faker.lorem.paragraph()}'`, `'${faker.lorem.paragraph()}'`];
