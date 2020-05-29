@@ -12,6 +12,7 @@
     "dataGen": "node --max-old-space-size=4076 ./database/dataGen.js",
     "seed": "node ./database/seed.js",
     "Cassandra": "node ./database/Cassandra.js",
+    "PostgreSQL": "node ./database/PostgreSQL.js",
     "start": "nodemon server/index.js",
     "test": "jest",
     "test:coverage": "jest --verbose --coverage"
@@ -29,7 +30,8 @@
     "pg": "^8.2.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-test-renderer": "^16.13.1"
+    "react-test-renderer": "^16.13.1",
+    "sequelize": "^5.21.11"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
