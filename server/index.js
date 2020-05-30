@@ -4,9 +4,8 @@ const bodyParser = require('body-parser');
 const path = require('path');
 
 const app = express();
-const db = require('../database/postgres.js');
+const db = require('../database/PostgreSQL.js');
 
-console.log(db);
 
 const PORT = 3002;
 
@@ -18,11 +17,11 @@ app.use('/:id', express.static('public'));
 
 app.get('/items/:id', (req, res) => {
   const { id } = req.params;
-  db.getOne(id, res);
+  db.getProduct(id, res);
 });
 
 app.post('/items/', (req, res) => {
-  db.createOne(req.body, res);
+  db.createProduct(req.body, res);
 });
 
 app.listen(PORT, () => {

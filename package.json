@@ -29,6 +29,7 @@
     "mongodb": "^3.5.7",
     "mongoose": "^5.9.11",
     "pg": "^8.2.1",
+    "pg-hstore": "^2.3.3",
     "pg-promise": "^10.5.6",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
