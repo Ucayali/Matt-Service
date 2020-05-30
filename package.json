@@ -9,10 +9,10 @@
   "scripts": {
     "build": "webpack -d --watch",
     "build:prod": "webpack --config production.config.js",
-    "dataGen": "node --max-old-space-size=4076 ./database/dataGen.js",
+    "dataGen": "node --max-old-space-size=4076 ./scripts/dataGen.js",
     "seed": "node ./database/seed.js",
     "Cassandra": "node ./database/Cassandra.js",
-    "PostgreSQL": "node ./database/PostgreSQL.js",
+    "PostgreSQL": "node ./scripts/PostgreSQL.js",
     "start": "nodemon server/index.js",
     "test": "jest",
     "test:coverage": "jest --verbose --coverage"
@@ -20,6 +20,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.8.7",
     "babel-preset-airbnb": "^5.0.0",
+    "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "cassandra-driver": "^4.5.2",
     "csv-write-stream": "^2.0.0",
@@ -28,6 +29,8 @@
     "mongodb": "^3.5.7",
     "mongoose": "^5.9.11",
     "pg": "^8.2.1",
+    "pg-hstore": "^2.3.3",
+    "pg-promise": "^10.5.6",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-test-renderer": "^16.13.1",

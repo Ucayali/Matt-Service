@@ -1,35 +1,82 @@
 /* eslint-disable no-console */
-const { Sequelize, DataTypes } = require('sequelize');
+// postgres DB
+/* eslint-disable no-unused-vars */
+/* eslint-disable prefer-const */
+const Promise = require('bluebird');
 
+const initOptions = {
+  promiseLib: Promise,
+};
 
-const sequelize = new Sequelize('item_details', 'oso', 'hrr45', {
+const pgp = require('pg-promise')(initOptions);
+
+const connection = {
+  user: 'oso',
+  password: 'hrr45',
   host: 'localhost',
-  dialect: 'postgres',
-  logging: false,
-});
+  database: 'item_details',
+  port: 5432,
+};
+
+const db = pgp(connection);
+
+const getProduct = (req, res) => {
+  db.query(`SELECT * FROM products WHERE id = ${req}`)
+    .then((result) => {
+      const data = result[0];
+      const product = {};
+      product.id = data.id;
+      product.productName = data.productName;
+      product.producer = data.producer;
+      product.answeredQuestions = data.answeredQuestions;
+      product.numberOfRatings = data.numberOfRatings;
+      product.starPercentages = JSON.parse(data.starPercentages.replace(/'/g, '"'));
+      product.price = Number(data.price);
+      product.inStock = data.inStock;
+      product.productInfo = data.productinfo.replace(/[[\]']+/g, '').split(',');
+      res.status(200);
+      res.send(product);
+      res.end();
+    })
+    .catch((err) => {
+      console.log('Error getting product: ', err);
+      res.status(400);
+      res.end();
+    });
+};
+
+const createProduct = (req, res) => {
+  let {
+    id,
+    productName,
+    producer,
+    answeredQuestions,
+    numberOfRatings,
+    starPercentages,
+    price,
+    inStock,
+    productInfo,
+  } = req;
+
+  starPercentages = JSON.stringify(starPercentages);
+  productInfo = JSON.stringify(productInfo);
+
+  db.query(`INSERT INTO products (id, productname, producer, answeredquestions, numberofratings, starpercentages, price, instock, productinfo)
+            VALUES (${id}, ${productName}, ${producer}, ${answeredQuestions}, ${numberOfRatings}, ${starPercentages}, ${price}, ${inStock} , ${productInfo})`, req)
+    .then(() => {
+      console.log('Inserted id: ', `${id}`);
+      res.status(200);
+      res.end();
+    })
+    .catch((err) => {
+      console.error('Error inserting: ', err);
+      res.status(404);
+      res.end();
+    });
+};
 
 
-const products = sequelize.define('products', {
-  id: { type: DataTypes.INTEGER, primaryKey: true },
-  productName: DataTypes.STRING,
-  producer: DataTypes.STRING,
-  answeredQuestions: DataTypes.INTEGER,
-  numberOfRatings: DataTypes.INTEGER,
-  starPercentages: DataTypes.STRING,
-  price: DataTypes.FLOAT(2),
-  inStock: DataTypes.BOOLEAN,
-  productinfo: DataTypes.TEXT, // LIST
-}, {
-  indexes: [{ name: 'id', fields: ['id'] }],
-  timestamps: false,
-});
-
-products.sync({ force: true })
-  .then(() => {
-    sequelize.query("Copy products FROM '/Users/oso/code/code/item-details/database/products.csv' WITH (format csv, header true, delimiter '|')")
-      .then(() => {
-        sequelize.close()
-          .then(() => { console.log('Database Seeded'); })
-          .catch(() => { console.log('Error!'); });
-      });
-  });
+module.exports = {
+  getProduct,
+  createProduct,
+};

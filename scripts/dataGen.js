@@ -6,7 +6,7 @@ const faker = require('faker');
 const start = new Date();
 
 
-const writeProducts = fs.createWriteStream('./database/products.csv');
+const writeProducts = fs.createWriteStream('products.csv');
 writeProducts.write('id|productname|producer|answeredquestions|numberofratings|starpercentages|price|instock|productinfo\n', 'utf8');
 
 
@@ -39,7 +39,8 @@ const dataGen = (writer, encoding, callback) => {
       const starPercentages = starRatings.replace(/"/g, "'");
       const price = (10000 * Math.random()).toFixed(2);
       const inStock = Math.random() > 0.5;
-      const productInfo = [`'${faker.lorem.sentence()}'`, `'${faker.lorem.paragraph()}'`, `'${faker.lorem.paragraph()}'`];
+      const info = [faker.lorem.sentence(), faker.lorem.paragraph(), faker.lorem.paragraph()];
+      const productInfo = JSON.stringify(info);
       const data = `${id}|${productName}|${producer}|${answeredQuestions}|${numberOfRatings}|${starPercentages}|${price}|${inStock}|${productInfo}\n`;
       if (i === 0) {
         writer.write(data, encoding, callback);
