@@ -14,11 +14,13 @@
     "Cassandra": "node ./database/Cassandra.js",
     "PostgreSQL": "node ./scripts/PostgreSQL.js",
     "start": "nodemon server/index.js",
+    "stress": "artillery run ./stressTest/stressTest.yml",
     "test": "jest",
     "test:coverage": "jest --verbose --coverage"
   },
   "dependencies": {
     "@babel/polyfill": "^7.8.7",
+    "artillery": "^1.6.0",
     "babel-preset-airbnb": "^5.0.0",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
@@ -28,6 +30,7 @@
     "jquery": "^3.5.0",
     "mongodb": "^3.5.7",
     "mongoose": "^5.9.11",
+    "newrelic": "^6.8.0",
     "pg": "^8.2.1",
     "pg-hstore": "^2.3.3",
     "pg-promise": "^10.5.6",
