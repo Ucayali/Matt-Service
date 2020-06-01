@@ -14,6 +14,7 @@
     "Cassandra": "node ./database/Cassandra.js",
     "PostgreSQL": "node ./scripts/PostgreSQL.js",
     "start": "nodemon server/index.js",
+    "stress": "artillery run ./stressTest/stressTest.yml",
     "test": "jest",
     "test:coverage": "jest --verbose --coverage"
   },

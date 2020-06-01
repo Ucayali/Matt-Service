@@ -3,13 +3,13 @@ const faker = require('faker');
 
 
 const createRandomId = (userContext, events, done) => {
-  const id = Math.floor(Math.random() * 10000001);
+  const id = Math.floor(Math.random() * 10000000);
   userContext.vars.id = id;
   return done();
 };
 
 const createRandomItem = (userContext, events, done) => {
-  const id = Math.floor(Math.random() * 10000001);
+  const id = Math.floor(Math.random() * 10000000);
   const productName = faker.commerce.productName();
   const producer = faker.company.companyName();
   const answeredQuestions = Math.floor(Math.random() * 100);

@@ -1,43 +1,48 @@
 config:
   processor: './config.js'
   target: 'http://localhost:3002'
+  http:
+    pool: 150
   phases:
-    - duration: 10
+    - duration: 30
       arrivalRate: 1
-      rampTo: 10
-      maxVusers: 10
-      name: "10 users"
+      maxVusers: 1
+      name: '1 user'
     - duration: 30
       arrivalRate: 10
-      rampTo: 100
-      maxVusers: 100
-      name: "100 users"
+      maxVusers: 10
+      name: '10 users'
     - duration: 60
       arrivalRate: 100
-      rampTo: 1000
+      maxVusers: 100
+      name: '100 users'
+    - duration: 60
+      arrivalRate: 1000
       maxVusers: 1000
-      name: "1000 users"
+      name: '1000 users'
 
 scenarios:
-  - name: "Get items details"
-    weight: 10
+  - name: 'Get items details'
     flow:
-    - function: "createRandomId"
-    - get:
-        url: "/?={id}"
-  - name: "Create new item"
-    weight: 2
-    flow:
-    - function: "createRandomItem"
-    - post:
-        url: "/items/"
-        json:
-          id: "{{ id }}"
-          productName: "{{ productName }}"
-          producer: "{{ producer }}"
-          answeredQuestions: "{{ answeredQuestions }}"
-          starPercentages: "{{ starPercentages }} "
-          numberOfRatings: "{{ numberOfRatings }}"
-          price: "{{ price }}"
-          inStock: "{{ inStock }}"
-          productInfo: "{{ productInfo }}"
+      -
+        count: 10
+        loop:
+        - function: 'createRandomId'
+        - get:
+            url: '/?={id}'
+  # - name: "Create new item"
+  #   weight: 2
+  #   flow:
+  #   - function: "createRandomItem"
+  #   - post:
+  #       url: "/items/"
+  #       json:
+  #         id: "{{ id }}"
+  #         productName: "{{ productName }}"
+  #         producer: "{{ producer }}"
+  #         answeredQuestions: "{{ answeredQuestions }}"
+  #         starPercentages: "{{ starPercentages }} "
+  #         numberOfRatings: "{{ numberOfRatings }}"
+  #         price: "{{ price }}"
+  #         inStock: "{{ inStock }}"
+  #         productInfo: "{{ productInfo }}"
