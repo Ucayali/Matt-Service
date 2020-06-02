@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-// postgres DB
 /* eslint-disable no-unused-vars */
 /* eslint-disable prefer-const */
 const Promise = require('bluebird');
@@ -11,11 +10,11 @@ const initOptions = {
 const pgp = require('pg-promise')(initOptions);
 
 const connection = {
-  user: 'oso',
-  password: 'hrr45',
-  host: 'localhost',
-  database: 'item_details',
-  port: 5432,
+  user: process.env.PG_USER,
+  password: process.env.PG_PASS,
+  host: process.env.PG_HOST,
+  database: process.env.PG_DB,
+  port: process.env.PG_PORT,
 };
 
 const db = pgp(connection);

@@ -1,15 +1,18 @@
 /* eslint-disable no-console */
 require('newrelic');
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+const compression = require('compression');
 
 const app = express();
 const db = require('../database/PostgreSQL.js');
 
 
-const PORT = 3002;
+const { PORT } = process.env;
 
+app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '/../public')));
