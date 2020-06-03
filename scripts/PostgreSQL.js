@@ -1,9 +1,10 @@
 /* eslint-disable no-console */
 const { Sequelize, DataTypes } = require('sequelize');
+require('dotenv').config();
 
 
-const sequelize = new Sequelize('item_details', 'oso', 'hrr45', {
-  host: 'localhost',
+const sequelize = new Sequelize(process.env.PG_DB, process.env.PG_USER, process.env.PG_PASS, {
+  host: process.env.PG_HOST,
   dialect: 'postgres',
   logging: false,
 });

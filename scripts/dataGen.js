@@ -7,7 +7,7 @@ const start = new Date();
 
 
 const writeProducts = fs.createWriteStream('products.csv');
-writeProducts.write('id|productname|producer|answeredquestions|numberofratings|starpercentages|price|instock|productinfo\n', 'utf8');
+writeProducts.write('id|productname|producer|answeredquestions|starpercentages|numberofratings|price|instock|productinfo\n', 'utf8');
 
 
 const dataGen = (writer, encoding, callback) => {
@@ -41,7 +41,7 @@ const dataGen = (writer, encoding, callback) => {
       const inStock = Math.random() > 0.5;
       const info = [faker.lorem.sentence(), faker.lorem.paragraph(), faker.lorem.paragraph()];
       const productInfo = JSON.stringify(info);
-      const data = `${id}|${productName}|${producer}|${answeredQuestions}|${numberOfRatings}|${starPercentages}|${price}|${inStock}|${productInfo}\n`;
+      const data = `${id}|${productName}|${producer}|${answeredQuestions}|${starPercentages}|${numberOfRatings}|${price}|${inStock}|${productInfo}\n`;
       if (i === 0) {
         writer.write(data, encoding, callback);
       } else {
