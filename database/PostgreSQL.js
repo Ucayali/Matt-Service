@@ -1,37 +1,34 @@
-/* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
 /* eslint-disable prefer-const */
-const Promise = require('bluebird');
+/* eslint-disable no-console */
 
-const initOptions = {
-  promiseLib: Promise,
-};
+const { Pool } = require('pg');
 
-const pgp = require('pg-promise')(initOptions);
-
-const connection = {
+const pool = new Pool({
   user: process.env.PG_USER,
   password: process.env.PG_PASS,
   host: process.env.PG_HOST,
   database: process.env.PG_DB,
   port: process.env.PG_PORT,
-};
+});
 
-const db = pgp(connection);
+pool.connect()
+  .then(() => {
+    console.log('connected to postgres');
+  });
 
 const getProduct = (req, res) => {
-  db.query(`SELECT * FROM products WHERE id = ${req}`)
+  pool.query(`SELECT * FROM items WHERE id = ${req}`)
     .then((result) => {
-      const data = result[0];
+      const data = result.rows[0];
       const product = {};
       product.id = data.id;
-      product.productName = data.productName;
+      product.productName = data.productname;
       product.producer = data.producer;
-      product.answeredQuestions = data.answeredQuestions;
-      product.numberOfRatings = data.numberOfRatings;
-      product.starPercentages = JSON.parse(data.starPercentages.replace(/'/g, '"'));
+      product.answeredQuestions = data.answeredquestions;
+      product.numberOfRatings = data.numberofratings;
+      product.starPercentages = JSON.parse(data.starpercentages.replace(/'/g, '"'));
       product.price = Number(data.price);
-      product.inStock = data.inStock;
+      product.inStock = data.instock;
       product.productInfo = data.productinfo.replace(/[[\]']+/g, '').split(',');
       res.status(200);
       res.send(product);
@@ -60,7 +57,7 @@ const createProduct = (req, res) => {
   starPercentages = JSON.stringify(starPercentages);
   productInfo = JSON.stringify(productInfo);
 
-  db.query(`INSERT INTO products (id, productname, producer, answeredquestions, numberofratings, starpercentages, price, instock, productinfo)
+  pool.query(`INSERT INTO products (id, productname, producer, answeredquestions, numberofratings, starpercentages, price, instock, productinfo)
             VALUES (${id}, ${productName}, ${producer}, ${answeredQuestions}, ${numberOfRatings}, ${starPercentages}, ${price}, ${inStock} , ${productInfo})`, req)
     .then(() => {
       console.log('Inserted id: ', `${id}`);
